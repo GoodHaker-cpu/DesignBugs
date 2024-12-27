@@ -1,42 +1,42 @@
 import React from 'react';
-import { Search, Share2, Target, BarChart, Globe, Zap } from 'lucide-react';
+import { Code, Layout, Share2, Camera, Target, Search, BarChart } from 'lucide-react';
 
 const services = [
   {
-    title: 'SEO Optimization',
-    description: 'Boost your search rankings with our data-driven SEO strategies.',
-    icon: Search,
+    title: 'Web Development',
+    description: 'Build robust and scalable web applications tailored to your needs.',
+    icon: Code,
     gradient: 'from-blue-500 to-cyan-500'
   },
   {
-    title: 'Social Media Growth',
+    title: 'Web Designing',
+    description: 'Create stunning and user-friendly designs for your website.',
+    icon: Layout,
+    gradient: 'from-purple-500 to-pink-500'
+  },
+  {
+    title: 'Social Media Marketing',
     description: 'Engage and grow your audience across all social platforms.',
     icon: Share2,
-    gradient: 'from-purple-500 to-pink-500'
+    gradient: 'from-orange-500 to-red-500'
+  },
+  {
+    title: 'Photography',
+    description: 'Capture stunning visuals to elevate your brand and campaigns.',
+    icon: Camera,
+    gradient: 'from-green-500 to-teal-500'
   },
   {
     title: 'PPC Campaigns',
     description: 'Maximize ROI with targeted pay-per-click advertising.',
     icon: Target,
-    gradient: 'from-orange-500 to-red-500'
-  },
-  {
-    title: 'Analytics & Insights',
-    description: 'Make data-driven decisions with comprehensive analytics.',
-    icon: BarChart,
-    gradient: 'from-green-500 to-teal-500'
-  },
-  {
-    title: 'Global Reach',
-    description: 'Expand your business to international markets effectively.',
-    icon: Globe,
-    gradient: 'from-indigo-500 to-purple-500'
-  },
-  {
-    title: 'Fast Results',
-    description: 'Quick implementation and rapid growth strategies.',
-    icon: Zap,
     gradient: 'from-yellow-500 to-orange-500'
+  },
+  {
+    title: 'SEO Optimization & Analytics',
+    description: 'Boost your search rankings and make data-driven decisions with comprehensive analytics.',
+    icon: Search,
+    gradient: 'from-indigo-500 to-purple-500'
   }
 ];
 

@@ -10,7 +10,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           {/* Company Info */}
           <div className="space-y-4">
-            <h3 className="text-xl font-bold text-white mb-4">DataVerse Tech.</h3>
+            <h3 className="text-xl font-bold text-white mb-4">design-bugs</h3>
             <p className="text-gray-400">
               Empowering businesses with cutting-edge digital marketing solutions for sustainable growth.
             </p>
@@ -53,8 +53,8 @@ export default function Footer() {
             <h4 className="text-lg font-semibold text-white mb-4">Our Services</h4>
             <ul className="space-y-2">
               {[
-                'SEO Optimization',
-                'Social Media Marketing',
+                'Web Development',
+                'Web Designing',
                 'Content Strategy',
                 'Analytics & Reporting',
                 'PPC Management'
@@ -78,15 +78,15 @@ export default function Footer() {
             <ul className="space-y-4">
               <li className="flex items-start">
                 <MapPin className="w-5 h-5 mr-3 text-primary-400 flex-shrink-0" />
-                <span>123 Digital Avenue, Tech City, 12345</span>
+                <span>428/D-22 60 Feet Road Chhatarpur Delhi 110074 India</span>
               </li>
               <li className="flex items-center">
                 <Phone className="w-5 h-5 mr-3 text-primary-400 flex-shrink-0" />
-                <span>+123 456 789</span>
+                <span>+91 8173883956, +91 9013435109</span>
               </li>
               <li className="flex items-center">
                 <Mail className="w-5 h-5 mr-3 text-primary-400 flex-shrink-0" />
-                <span>info@example.com</span>
+                <span>info@design-bugs.com</span>
               </li>
             </ul>
           </div>
@@ -117,7 +117,7 @@ export default function Footer() {
 
         {/* Copyright */}
         <div className="border-t border-gray-800 mt-8 pt-8 text-center">
-          <p>© {currentYear} DataVerse Tech. All rights reserved.</p>
+          <p>© {currentYear} design-bugs. All rights reserved.</p>
         </div>
       </div>
     </footer>

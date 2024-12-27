@@ -4,6 +4,7 @@ import { Mail, Phone, MapPin, Send } from 'lucide-react';
 interface FormData {
   name: string;
   email: string;
+  phoneNumber: string;
   message: string;
 }
 
@@ -11,13 +12,37 @@ export default function Contact() {
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
+    phoneNumber: '',
     message: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert('Form submitted!');
-    setFormData({ name: '', email: '', message: '' });
+
+    const { name, email, phoneNumber, message } = formData;
+
+    try {
+      const response = await fetch(
+        `http://52.91.254.129:8080/api/v1/emails/send?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&phoneNumber=${encodeURIComponent(phoneNumber)}&userQuestion=${encodeURIComponent(message)}`,
+        {
+          method: 'POST',
+          headers: {
+            'accept': '*/*'
+          },
+          body: ''
+        }
+      );
+
+      if (response.ok) {
+        alert('Form submitted successfully!');
+        setFormData({ name: '', email: '', phoneNumber: '', message: '' });
+      } else {
+        alert('Failed to submit the form. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error submitting the form:', error);
+      alert('An error occurred. Please try again later.');
+    }
   };
 
   return (
@@ -63,6 +88,22 @@ export default function Contact() {
               />
             </div>
             <div>
+              <label htmlFor="phoneNumber" className="block text-sm font-medium mb-2 text-black">
+                Your Phone Number
+              </label>
+              <input
+                type="text"
+                id="phoneNumber"
+                value={formData.phoneNumber}
+                onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
+                className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 
+                  focus:ring-2 focus:ring-primary-500 focus:border-transparent
+                  text-white placeholder-gray-400"
+                placeholder="9876543210"
+                required
+              />
+            </div>
+            <div>
               <label htmlFor="message" className="block text-sm font-medium mb-2 text-black">
                 Message
               </label>
@@ -97,7 +138,7 @@ export default function Contact() {
               </div>
               <div>
                 <h3 className="text-lg font-semibold mb-1">Email Us</h3>
-                <p className="text-gray-300">info@example.com</p>
+                <p className="text-gray-300">info@design-bugs.com</p>
               </div>
             </div>
 
@@ -107,7 +148,7 @@ export default function Contact() {
               </div>
               <div>
                 <h3 className="text-lg font-semibold mb-1">Call Us</h3>
-                <p className="text-gray-300">+123 456 789</p>
+                <p className="text-gray-300">+91 8173883956, +91 9013435109</p>
               </div>
             </div>
 
@@ -117,7 +158,7 @@ export default function Contact() {
               </div>
               <div>
                 <h3 className="text-lg font-semibold mb-1">Visit Us</h3>
-                <p className="text-gray-300">123 Digital Avenue, Tech City, 12345</p>
+                <p className="text-gray-300">428/D-22 60 Feet Road Chhatarpur Delhi 110074 India</p>
               </div>
             </div>
           </div>
