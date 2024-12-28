@@ -23,7 +23,7 @@ export default function Contact() {
 
     try {
       const response = await fetch(
-        `http://52.91.254.129:8080/api/v1/emails/send?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&phoneNumber=${encodeURIComponent(phoneNumber)}&message=${encodeURIComponent(message)}`,
+        `https://52.91.254.129:8080/api/v1/emails/send?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&phoneNumber=${encodeURIComponent(phoneNumber)}&message=${encodeURIComponent(message)}`,
         {
           method: 'POST',
           headers: {
