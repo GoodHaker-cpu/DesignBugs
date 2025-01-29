@@ -8,7 +8,7 @@ export default function Navbar() {
     <nav className="bg-gray-900 text-white">
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          <a href="#" className="text-xl font-bold">{'{db}'}</a>
+          <a href="#" className="text-xl font-bold">{'{db.}'}</a>
           
           <div className="hidden md:flex space-x-8">
             <a href="#services" className="hover:text-gray-300 transition">Services</a>
