@@ -1,5 +1,6 @@
 import React from 'react';
 import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin, ArrowRight } from 'lucide-react';
+import logo from '../assets/img/DB_Small_Logo_Transparent.svg';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -10,7 +11,9 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           {/* Company Info */}
           <div className="space-y-4">
-            <h3 className="text-xl font-bold text-white mb-4">design-bugs</h3>
+            <h3 className="text-xl font-bold text-white mb-4"><a href="#" className="text-xl font-bold">
+            <img src={logo} alt='logo'/>
+          </a>Design-Bugs</h3>
             <p className="text-gray-400">
               Empowering businesses with cutting-edge digital marketing solutions for sustainable growth.
             </p>

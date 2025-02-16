@@ -38,13 +38,13 @@ export default function Portfolio() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {projects.map((project) => (
-            <div 
+            <div
               key={project.id}
               className="group relative overflow-hidden rounded-2xl shadow-lg cursor-pointer"
               onClick={() => setSelectedProject(project)}
             >
               <div className="aspect-w-16 aspect-h-9">
-                <img 
+                <img
                   src={project.image}
                   alt={project.title}
                   className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
@@ -55,9 +55,10 @@ export default function Portfolio() {
                 <h3 className="text-xl font-bold mb-2 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300">
                   {project.title}
                 </h3>
-                <p className="text-gray-300 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300 delay-75">
+                <p className="text-gray-300 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300 delay-75 line-clamp-2 mb-5">
                   {project.description}
                 </p>
+
               </div>
             </div>
           ))}
