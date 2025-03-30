@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
-import axios from 'axios';
 
 interface FormData {
   name: string;
   email: string;
   phoneNumber: string;
-  message: string;
+  userQuestion: string;
 }
 
 export default function Contact() {
@@ -14,7 +13,7 @@ export default function Contact() {
     name: '',
     email: '',
     phoneNumber: '',
-    message: ''
+    userQuestion: ''
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -23,9 +22,7 @@ export default function Contact() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const { name, email, phoneNumber, message } = formData;
-
-    if (!name || !email || !phoneNumber || !message) {
+    if (!formData.name || !formData.email || !formData.phoneNumber || !formData.userQuestion) {
       setStatusMessage('All fields are required!');
       return;
     }
@@ -33,34 +30,45 @@ export default function Contact() {
     setIsSubmitting(true);
     setStatusMessage('');
 
+    const myHeaders = new Headers();
+    myHeaders.append("accept", "*/*");
+
+    const queryParams = new URLSearchParams({
+      name: formData.name,
+      email: formData.email,
+      phoneNumber: formData.phoneNumber,
+      userQuestion: formData.userQuestion
+    }).toString();
+
     try {
-      const response = await axios.post('http://localhost:5173/send-email', formData);
-      
-      if (response.status === 200) {
-        setStatusMessage('Form submitted successfully!');
-        setFormData({ name: '', email: '', phoneNumber: '', message: '' });
-      }
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        if (error.response) {
-          setStatusMessage(error.response.data.error || 'Error submitting form. Please try again later.');
-        } else if (error.request) {
-          setStatusMessage('No response from server. Please try again later.');
-        } else {
-          setStatusMessage('Unexpected error occurred. Please try again later.');
+      const response = await fetch(
+        `https://designbugs-backend-production.up.railway.app/api/v1/emails/send?${queryParams}`,
+        {
+          method: "POST",
+          headers: myHeaders,
+          redirect: "follow"
         }
-      } else if (error instanceof Error) {
-        setStatusMessage(`Unexpected error: ${error.message}`);
+      );
+
+      const result = await response.text();
+      console.log(result);
+      
+      if (response.ok) {
+        setStatusMessage('Message sent successfully!');
+        setFormData({ name: '', email: '', phoneNumber: '', userQuestion: '' });
       } else {
-        setStatusMessage('An unknown error occurred. Please try again later.');
+        setStatusMessage('Failed to send message. Please try again.');
       }
+    } catch (error) {
+      console.error(error);
+      setStatusMessage('An error occurred. Please try again later.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <section id="contact" className="relative py-24 bg-gradient-to-br from-gray-900 to-gray-800 text-white">
+    <section className="relative py-24 bg-gradient-to-br from-gray-900 to-gray-800 text-white">
       <div className="container mx-auto px-6">
         <div className="text-center max-w-2xl mx-auto mb-16">
           <h2 className="text-4xl font-bold mb-4">Get in Touch</h2>
@@ -68,30 +76,35 @@ export default function Contact() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <form onSubmit={handleSubmit} className="space-y-6 glass-card p-8 rounded-2xl">
-            {['name', 'email', 'phoneNumber', 'message'].map((field, index) => (
-              <div key={index}>
-                <label htmlFor={field} className="block text-sm font-medium mb-2 text-white">
-                  {field === 'phoneNumber' ? 'Your Phone Number' : `Your ${field.charAt(0).toUpperCase() + field.slice(1)}`}
+          <form onSubmit={handleSubmit} className="space-y-6 bg-white/10 p-8 rounded-2xl backdrop-blur-lg">
+            {[
+              { id: 'name', label: 'Your Name', type: 'text' },
+              { id: 'email', label: 'Your Email', type: 'email' },
+              { id: 'phoneNumber', label: 'Your Phone Number', type: 'text' },
+              { id: 'userQuestion', label: 'Your Message', type: 'textarea' }
+            ].map((field) => (
+              <div key={field.id}>
+                <label htmlFor={field.id} className="block text-sm font-medium mb-2 text-white">
+                  {field.label}
                 </label>
-                {field === 'message' ? (
+                {field.type === 'textarea' ? (
                   <textarea
-                    id={field}
+                    id={field.id}
                     rows={5}
-                    value={formData[field as keyof FormData]}
-                    onChange={(e) => setFormData({ ...formData, [field]: e.target.value })}
-                    className="w-full px-4 py-3 rounded-lg bg-white border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent text-black placeholder-gray-700"
-                    placeholder={`Enter your ${field}...`}
+                    value={formData[field.id as keyof FormData]}
+                    onChange={(e) => setFormData({ ...formData, [field.id]: e.target.value })}
+                    className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 focus:ring-2 focus:ring-white/50 focus:border-transparent text-white placeholder-gray-400"
+                    placeholder={`Enter ${field.label.toLowerCase()}...`}
                     required
                   />
                 ) : (
                   <input
-                    type={field === 'email' ? 'email' : 'text'}
-                    id={field}
-                    value={formData[field as keyof FormData]}
-                    onChange={(e) => setFormData({ ...formData, [field]: e.target.value })}
-                    className="w-full px-4 py-3 rounded-lg bg-white border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent text-black placeholder-gray-700"
-                    placeholder={field === 'phoneNumber' ? '9876543210' : `Enter your ${field}...`}
+                    type={field.type}
+                    id={field.id}
+                    value={formData[field.id as keyof FormData]}
+                    onChange={(e) => setFormData({ ...formData, [field.id]: e.target.value })}
+                    className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 focus:ring-2 focus:ring-white/50 focus:border-transparent text-white placeholder-gray-400"
+                    placeholder={field.id === 'phoneNumber' ? '9876543210' : `Enter ${field.label.toLowerCase()}...`}
                     required
                   />
                 )}
@@ -100,29 +113,34 @@ export default function Contact() {
 
             <button
               type="submit"
-              className="w-full px-6 py-3 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-lg hover:from-primary-600 hover:to-secondary-600 transform hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2"
+              className="w-full px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transform hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2"
               disabled={isSubmitting}
             >
               <span>{isSubmitting ? 'Sending...' : 'Send Message'}</span>
               <Send className="w-4 h-4" />
             </button>
-            {statusMessage && <p className="text-center mt-4 text-white">{statusMessage}</p>}
+            {statusMessage && (
+              <p className={`text-center mt-4 ${statusMessage.includes('success') ? 'text-green-400' : 'text-red-400'}`}>
+                {statusMessage}
+              </p>
+            )}
           </form>
 
           <div className="space-y-8">
-            {[{ icon: Mail, title: 'Email Us', content: 'info@design-bugs.com' },
+            {[
+              { icon: Mail, title: 'Email Us', content: 'info@design-bugs.com' },
               { icon: Phone, title: 'Call Us', content: '+91 8173883956, +91 9013435109' },
-              { icon: MapPin, title: 'Visit Us', content: '428/D-22 60 Feet Road Chhatarpur Delhi 110074 India' }]
-              .map((item, index) => (
-                <div className="flex items-start space-x-4" key={index}>
-                  <div className="bg-white/10 p-3 rounded-lg">
-                    <item.icon className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold mb-1">{item.title}</h3>
-                    <p className="text-gray-300">{item.content}</p>
-                  </div>
+              { icon: MapPin, title: 'Visit Us', content: '428/D-22 60 Feet Road Chhatarpur Delhi 110074 India' }
+            ].map((item, index) => (
+              <div className="flex items-start space-x-4" key={index}>
+                <div className="bg-white/10 p-3 rounded-lg">
+                  <item.icon className="w-6 h-6" />
                 </div>
+                <div>
+                  <h3 className="text-lg font-semibold mb-1">{item.title}</h3>
+                  <p className="text-gray-300">{item.content}</p>
+                </div>
+              </div>
             ))}
           </div>
         </div>
